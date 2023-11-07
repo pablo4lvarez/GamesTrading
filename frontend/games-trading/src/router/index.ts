@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import 'tailwindcss/tailwind.css'
 import Ping from '../components/Ping.vue'
 
 
