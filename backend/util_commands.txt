@@ -1,0 +1,5 @@
+* Go into postgres DB
+psql -U postgres -h localhost -d gamestrading
+
+* Delete alembic_version to remigrate the DB
+delete from alembic_version;
