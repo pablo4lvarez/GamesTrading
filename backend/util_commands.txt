@@ -1,3 +1,6 @@
+* Activate virtual environment
+. env/bin/activate
+
 * Go into postgres DB
 psql -U postgres -h localhost -d gamestrading
 
