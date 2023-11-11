@@ -1,11 +1,13 @@
+import TradesCounter from '@/components/TradesCounter'
 import Hero from '../components/Hero'
+import Searcher from '@/components/Searcher'
 
 export default function Home() {
   return (
     <>
-      <h1 className='font-bold text-teal-500 text-2xl'>Games Trading</h1>
       <Hero></Hero>
-      <button className="btn btn-primary">Hello Daisy ui</button>
+      <TradesCounter/>
+      <Searcher/>
     </>
   )
 }
