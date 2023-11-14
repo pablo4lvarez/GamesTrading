@@ -13,6 +13,7 @@ const Hero = () => {
           <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold py-2 md:py-6">Games Trading</h1>
           <p className="py-4 md:py-6 text-lg md:text-2xl">Descubre tu nueva plataforma para intercambiar juegos físicos. ¡Encuentra o crea rápidamente ofertas y solo ponte en contacto!</p>
           <button className="btn btn-primary btn-xs sm:btn-sm md:btn-md lg:btn-lg my-4 md:my-6">Registrarse</button>
+          {/* También crear opción de comienza comenzar! */}
         </div>
       </div>
     </div>

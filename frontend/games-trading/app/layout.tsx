@@ -17,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" data-theme="coffee">
-      <body>
+    <html lang="en" data-theme="forest">
+      <body >
         <NavBar />
         <main className='relative overflow-hidden'>
           {children}
