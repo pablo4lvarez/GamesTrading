@@ -1,7 +1,8 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_migrate import Migrate
 from models import db, UsersModel
+from routes.users_routes import user_routes
 
 
 # instantiate the app
@@ -14,13 +15,12 @@ migrate = Migrate(app, db)
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
 
-
 # sanity check route
 @app.route('/ping', methods=['GET'])
 def ping_pong():
     return jsonify('pong!')
 
-
+app.register_blueprint(user_routes)
 
 
 
