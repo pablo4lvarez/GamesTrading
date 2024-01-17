@@ -4,5 +4,10 @@
 * Go into postgres DB
 psql -U postgres -h localhost -d gamestrading
 
-* Delete alembic_version to remigrate the DB
+* Init, migrate and upgrade the DB
+flask db init
+flask db migrate
+flask db upgrade
+
+* Delete alembic_version to remigrate the DB. You need to delete migrations folder to initiate a new DB.
 delete from alembic_version;
