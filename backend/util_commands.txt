@@ -1,6 +1,9 @@
 * Activate virtual environment
 . env/bin/activate
 
+* Run the backend
+python app.py or flask run
+
 * Go into postgres DB
 psql -U postgres -h localhost -d gamestrading
 
