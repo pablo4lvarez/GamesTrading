@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from models import db, UsersModel
 from routes.users_routes import user_routes
+from routes.games_routes import games_routes
 
 
 # instantiate the app
@@ -21,6 +22,7 @@ def ping_pong():
     return jsonify('pong!')
 
 app.register_blueprint(user_routes)
+app.register_blueprint(games_routes)
 
 
 
