@@ -5,6 +5,7 @@ from models import db
 from routes.users_routes import user_routes
 from routes.games_routes import games_routes
 from routes.wishes_routes import wishes_routes
+from routes.offers_routes import offers_routes
 
 
 # instantiate the app
@@ -25,6 +26,7 @@ def ping_pong():
 app.register_blueprint(user_routes)
 app.register_blueprint(games_routes)
 app.register_blueprint(wishes_routes)
+app.register_blueprint(offers_routes)
 
 
 

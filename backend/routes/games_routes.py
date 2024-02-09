@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, abort
 
 from models import GamesModel, db
 
@@ -20,7 +20,7 @@ def create_game():
     db.session.commit()
     return jsonify({"message": f"Game {new_game.name} for {new_game.platform} has been created successfully."})
   else:
-    return jsonify({"error": "The request payload is not in JSON format"})
+    abort(400, description="The request payload is not in JSON format")
 
 @games_routes.route('/games/<id>', methods=['GET', 'DELETE'])
 def handle_game(id):
@@ -29,7 +29,7 @@ def handle_game(id):
     if game:
       return jsonify({"name": game.name, "genre": game.genre, "year": game.year, "platform": game.platform})
     else:
-      return jsonify({"error": "The game does not exist"})
+      abort(404, description="The game does not exist")
   
   elif request.method == 'DELETE':
     db.session.delete(game)
