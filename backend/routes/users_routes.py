@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, abort
 
 from models import UsersModel, db
 
@@ -31,7 +31,7 @@ def create_user():
     db.session.commit()
     return jsonify({"message": f"User {new_user.name} has been created successfully."})
   else:
-    return jsonify({"error": "The request payload is not in JSON format"})
+    abort(400, description="The request payload is not in JSON format")
 
 @user_routes.route('/users/<id>', methods=['GET', 'PUT', 'DELETE'])
 def handle_user(id):
@@ -41,7 +41,7 @@ def handle_user(id):
     if user:
       return jsonify({"name": user.name, "lastname": user.lastname, "email": user.email, "phone": user.phone, "location": user.location})
     else:
-      return jsonify({"error": "The user does not exist"})
+      abort(404, description="The user does not exist")
   
   elif request.method == 'PUT':
     # Logic to update a user

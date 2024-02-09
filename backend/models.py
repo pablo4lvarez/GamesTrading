@@ -30,7 +30,7 @@ class GamesModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
     genre = db.Column(db.String(128), nullable=False)
-    year = db.Column(db.String(128), nullable=False)
+    year = db.Column(db.Integer, nullable=False)
     platform = db.Column(db.String(128), nullable=False)
 
     def __init__(self, name, genre, year, platform):
@@ -72,7 +72,7 @@ class WishesModel(db.Model):
     def __repr__(self):
         return f'<Wish {self.id}>'
 
-class Exchanges(db.Model):
+class ExchangesModel(db.Model):
     __tablename__ = 'exchanges'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -80,7 +80,7 @@ class Exchanges(db.Model):
     user_2_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     game_1_id = db.Column(db.Integer, db.ForeignKey('games.id'))
     game_2_id = db.Column(db.Integer, db.ForeignKey('games.id'))
-    status = db.Column(db.String(128), nullable=False)
+    status = db.Column(db.String(128), nullable=False) # pending, accepted, rejected
 
     def __init__(self, user_1_id, user_2_id, game_1_id, game_2_id, status):
         self.user_1_id = user_1_id
