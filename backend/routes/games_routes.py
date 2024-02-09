@@ -9,10 +9,15 @@ games_routes = Blueprint('games_routes', __name__)
 def create_game():
   if request.is_json:
     data = request.get_json()
+    if type(data['year']) != int:
+      casted_year = int(data['year'])
+    elif type(data['year']) == int:
+      casted_year = data['year']
+
     new_game = GamesModel(
                 name=data['name'],
                 genre=data['genre'],
-                year=data['year'],
+                year=casted_year,
                 platform=data['platform']
               )
     

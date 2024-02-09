@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_migrate import Migrate
 from models import db
@@ -6,6 +6,7 @@ from routes.users_routes import user_routes
 from routes.games_routes import games_routes
 from routes.wishes_routes import wishes_routes
 from routes.offers_routes import offers_routes
+from routes.exchanges_routes import exchange_routes
 
 
 # instantiate the app
@@ -27,7 +28,7 @@ app.register_blueprint(user_routes)
 app.register_blueprint(games_routes)
 app.register_blueprint(wishes_routes)
 app.register_blueprint(offers_routes)
-
+app.register_blueprint(exchange_routes)
 
 
 if __name__ == '__main__':
