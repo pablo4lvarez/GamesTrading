@@ -3,8 +3,11 @@ import '../app/globals.css'
 import React, { useState } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
+import { useRouter } from 'next/router'
 
 const Register = () => {
+
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
     lastname: '',
@@ -20,8 +23,7 @@ const Register = () => {
     message: '',
   });
 
-  console.log('Backend URL:', process.env.NEXT_PUBLIC_REACT_APP_BACKEND_URL);
-
+  const [success, setSuccess] = useState(false);
 
   const handleChange = (e: { target: { name: any; value: any; }; }) => {
     const { name, value } = e.target;
@@ -38,11 +40,8 @@ const Register = () => {
     const differentPasswords = checkPasswords();
 
     if (!areEmptyFields && !differentPasswords) {
-      
-    
+
       // Make the POST request using Axios with the "Content-Type" header
-      console.log('Making POST request to register user');
-      console.log('Backend URL:', process.env.BACKEND_URL);
       axios.post(
         process.env.NEXT_PUBLIC_REACT_APP_BACKEND_URL + '/users',
         {
@@ -61,10 +60,11 @@ const Register = () => {
       ).then(response => {
           // Handle successful response
           console.log('Registration successful', response.data);
-          setAlert({
-            show: true,
-            message: 'Registration successful',
-          });
+          setSuccess(true);
+          // Add a delay to show the success message before redirecting
+          setTimeout(() => {
+            router.push('/login');
+          }, 2000);
         })
         .catch(error => {
           // Handle error
@@ -74,7 +74,6 @@ const Register = () => {
             message: 'Ocurrió un error al registrarse. Por favor, intenta nuevamente.',
           });
         });
-
     }
 
   };
@@ -150,12 +149,21 @@ const Register = () => {
           </label>
           <input type="password" name="repeatPassword" value={formData.repeatPassword} onChange={handleChange} placeholder="Type here" className="input input-bordered input-primary w-full max-w-xs" required={true}/>
         </div>
+
         {alert.show && (
           <div role="alert" className="alert alert-error w-full max-w-xs py-4">
             <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             <span>{alert.message}</span>
           </div>
         )}
+
+        {success && (
+          <div role="alert" className="alert alert-success w-full max-w-xs py-4">
+          <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          <span>Registro exitoso.</span>
+          </div>
+        )}
+
         <button className="btn btn-primary btn-xs sm:btn-sm md:btn-md lg:btn-lg my-4 md:my-6" onClick={handleRegister}>
           Registrarse
         </button>
