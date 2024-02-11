@@ -75,7 +75,13 @@ def login_user():
     data = request.get_json()
     user = UsersModel.query.filter_by(email=data['email']).first()
     if user and user.password == data['password']:
-      return jsonify({"message": f"Welcome {user.name}!"})
+      response_data = {
+        "message": f"Welcome {user.name}!",
+        "name": user.name,
+        "lastname": user.lastname,
+        "user_id": user.id
+      }
+      return jsonify(response_data)
     else:
       abort(401, description="Invalid username or password")
   else:
