@@ -68,3 +68,16 @@ def handle_user(id):
     return jsonify({"message": f"User {user.name} successfully deleted."})
 
 
+@user_routes.route('/users/login', methods=['POST'])
+def login_user():
+  # Logic to login a user
+  if request.is_json:
+    data = request.get_json()
+    user = UsersModel.query.filter_by(email=data['email']).first()
+    if user and user.password == data['password']:
+      return jsonify({"message": f"Welcome {user.name}!"})
+    else:
+      abort(401, description="Invalid username or password")
+  else:
+    abort(400, description="The request payload is not in JSON format")
+
