@@ -34,7 +34,6 @@ const Register = () => {
   };
 
   const handleRegister = () => {
-    // Implement your registration logic here using formData
     console.log('Registration data:', formData);
     const areEmptyFields = checkEmptyFields();
     const differentPasswords = checkPasswords();
@@ -71,7 +70,7 @@ const Register = () => {
           console.error('Registration failed', error.response.data);
           setAlert({
             show: true,
-            message: 'Ocurrió un error al registrarse. Por favor, intenta nuevamente.',
+            message: 'Ocurrió un error al iniciar sesión. Por favor, intenta nuevamente.',
           });
         });
     }
@@ -111,43 +110,43 @@ const Register = () => {
           <label className="label">
             <span className="label-text">Nombre:</span>
           </label>
-          <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Type here" className="input input-bordered input-primary w-full max-w-xs" required={true} />
+          <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Tu nombre" className="input input-bordered input-primary w-full max-w-xs" required={true} />
         </div>
         <div className="form-control w-full max-w-xs py-4">
           <label className="label">
             <span className="label-text">Apellido:</span>
           </label>
-          <input type="text" name="lastname" value={formData.lastname} onChange={handleChange} placeholder="Type here" className="input input-bordered input-primary w-full max-w-xs" required={true} />
+          <input type="text" name="lastname" value={formData.lastname} onChange={handleChange} placeholder="Tu apellido" className="input input-bordered input-primary w-full max-w-xs" required={true} />
         </div>
         <div className="form-control w-full max-w-xs py-4">
           <label className="label">
             <span className="label-text">Email:</span>
           </label>
-          <input type="text" name="email" value={formData.email} onChange={handleChange} placeholder="Type here" className="input input-bordered input-primary w-full max-w-xs" required={true} />
+          <input type="text" name="email" value={formData.email} onChange={handleChange} placeholder="Tu email" className="input input-bordered input-primary w-full max-w-xs" required={true} />
         </div>
         <div className="form-control w-full max-w-xs py-4">
           <label className="label">
             <span className="label-text">Teléfono:</span>
           </label>
-          <input type="text" name="phone" value={formData.phone} onChange={handleChange} placeholder="Type here" className="input input-bordered input-primary w-full max-w-xs" required={true} />
+          <input type="text" name="phone" value={formData.phone} onChange={handleChange} placeholder="9XXXXXXXX" className="input input-bordered input-primary w-full max-w-xs" required={true} />
         </div>
         <div className="form-control w-full max-w-xs py-4">
           <label className="label">
             <span className="label-text">Comuna:</span>
           </label>
-          <input type="text" name="location" value={formData.location} onChange={handleChange} placeholder="Type here" className="input input-bordered input-primary w-full max-w-xs" required={true} />
+          <input type="text" name="location" value={formData.location} onChange={handleChange} placeholder="Tu comuna" className="input input-bordered input-primary w-full max-w-xs" required={true} />
         </div>
         <div className="form-control w-full max-w-xs py-4">
           <label className="label">
             <span className="label-text">Contraseña:</span>
           </label>
-          <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Type here" className="input input-bordered input-primary w-full max-w-xs" required={true} />
+          <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Tu contraseña" className="input input-bordered input-primary w-full max-w-xs" required={true} />
         </div>
         <div className="form-control w-full max-w-xs py-4">
           <label className="label">
             <span className="label-text">Repetir Contraseña:</span>
           </label>
-          <input type="password" name="repeatPassword" value={formData.repeatPassword} onChange={handleChange} placeholder="Type here" className="input input-bordered input-primary w-full max-w-xs" required={true}/>
+          <input type="password" name="repeatPassword" value={formData.repeatPassword} onChange={handleChange} placeholder="Repite tu contraseña" className="input input-bordered input-primary w-full max-w-xs" required={true}/>
         </div>
 
         {alert.show && (
