@@ -33,13 +33,12 @@ const authOptions: NextAuthOptions = {
         console.log('res:', res);
 
         const user = res.data;
-        console.log('userData:', user);
 
         // If no error and we have user data, return it
         if (res.status == 200 && user) {
           console.log('status is 200!')
-          console.log('user:', user);
-          return user
+          console.log('user data:', user.data);
+          return user.data
         } else {
           console.log(res.data);
           throw new Error('error');
@@ -57,10 +56,22 @@ const authOptions: NextAuthOptions = {
       // update token
       if (params.user?.role) {
         params.token.role = params.user.role;
-        params.token.id = params.user.id;
+        params.token.user_id = params.user.id;
+        console.log('params.token:', params.token);
       }
       // return final_token
       return params.token;
+    },
+    session: async ({ session, user, token }) => {
+      // Check if user and user.data exist before accessing nested properties
+      console.log('in session!');
+      console.log('session user:', session.user);
+      console.log('tokenn:', token);
+      if (session.user) {
+        session.user.id = token.sub?.toString();
+      }
+  
+      return session;
     },
   },
   

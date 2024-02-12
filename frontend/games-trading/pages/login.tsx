@@ -64,7 +64,7 @@ const Login = () => {
           }
         } else {
           // Successful login
-          console.log('Login successful:', response);
+          console.log('Successful login:', response);
           router.push('/');
         }
       } catch (error) {
