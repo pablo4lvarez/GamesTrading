@@ -1,9 +1,13 @@
 import '../app/globals.css'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from "next/link"
 import axios from 'axios';
+import { useRouter } from 'next/router';
+import { signIn } from 'next-auth/react';
 
 const Login = () => {
+
+  const router = useRouter();
 
   const [loginData, setLoginData] = useState({
     email: '',
@@ -36,35 +40,43 @@ const Login = () => {
     }
   }
 
-  const handleLogin = () => {
-    console.log('Login data:', loginData);
+  const handleLogin = async () => {
     const emptyData = checkEmptyFields();
+  
     if (!emptyData) {
-      console.log('Login data valid!');
-      axios.post(
-        process.env.NEXT_PUBLIC_REACT_APP_BACKEND_URL + '/users/login',
-        {
+      try {
+        const response = await signIn('credentials', {
           email: loginData.email,
           password: loginData.password,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          redirect: false,
+        });
+
+        console.log('Login response:', response);
+
+        // Check if there is an error
+        if (response?.error) {
+          // Handle error, show alert, etc.
+          if (response.status === 401) {
+            setAlert({
+              show: true,
+              message: 'Credenciales incorrectas.',
+            });
+          }
+        } else {
+          // Successful login
+          console.log('Login successful:', response);
+          router.push('/');
         }
-      ).then(response => {
-        console.log('Login response:', response.data);
-        // Handle successful response
-      }).catch(error => {
-        console.error('Login error:', error.response.data);
-        // Handle error response
+      } catch (error) {
+        console.error('Login error:', error);
         setAlert({
           show: true,
-          message: 'Ocurrió un error al registrarse. Por favor, intenta nuevamente.',
+          message: 'Ocurrió un error al iniciar sesión. Por favor, intenta nuevamente.',
         });
-      });
+      }
     }
   };
+
 
   return (
     <div className='flex items-center justify-center bg-base-primary min-h-screen min-w-screen flex-col'>
