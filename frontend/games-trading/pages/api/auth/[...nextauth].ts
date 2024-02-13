@@ -15,9 +15,7 @@ const authOptions: NextAuthOptions = {
           email: string;
           password: string;
         };
-        // perform you login logic
-        // find out user from db
-        
+        // Find out user from db
         const res = await axios.post(
           process.env.NEXT_PUBLIC_REACT_APP_BACKEND_URL + "/users/login",
           {
@@ -31,9 +29,7 @@ const authOptions: NextAuthOptions = {
           }
         );
         console.log('res:', res);
-
         const user = res.data;
-
         // If no error and we have user data, return it
         if (res.status == 200 && user) {
           console.log('status is 200!')
@@ -42,7 +38,6 @@ const authOptions: NextAuthOptions = {
         } else {
           console.log(res.data);
           throw new Error('error');
-          
         }
         
       },
@@ -63,7 +58,6 @@ const authOptions: NextAuthOptions = {
       return params.token;
     },
     session: async ({ session, user, token }) => {
-      // Check if user and user.data exist before accessing nested properties
       console.log('in session!');
       console.log('session user:', session.user);
       console.log('tokenn:', token);
