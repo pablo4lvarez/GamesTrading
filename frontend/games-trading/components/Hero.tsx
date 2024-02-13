@@ -1,6 +1,36 @@
-import React from 'react'
+'use client'
 
-const Hero = () => {
+import React, { useEffect, useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { NextRouter } from 'next/router';
+
+interface HeroProps {
+  router: NextRouter;
+}
+
+const Hero: React.FC<HeroProps> = ({ router }) => {
+
+  const session = useSession();
+  const [btnText, setBtnText] = useState('Registrarse');
+
+  const handleBtnAction = () => {
+    if (session.data) {
+      // Redirect to Exchange
+
+    } else if (!session.data) {
+      // Redirect to register
+      router.push('/register');
+    }
+  };
+
+  useEffect(() => {
+    console.log('session:', session);
+    if (session.data) {
+      console.log('session.data:', session.data);
+      setBtnText('Comenzar');
+    }
+  });
+
   return (
     <div className="hero md:h-[70vh] bg-base-200">
       <div className="hero-content text-center">
@@ -12,7 +42,7 @@ const Hero = () => {
           />
           <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold py-2 md:py-6">Games Trading</h1>
           <p className="py-4 md:py-6 text-lg md:text-2xl">Descubre tu nueva plataforma para intercambiar juegos físicos. ¡Encuentra o crea rápidamente ofertas y ponte en contacto!</p>
-          <button className="btn btn-primary btn-xs sm:btn-sm md:btn-md lg:btn-lg my-4 md:my-6">Registrarse</button>
+          <button className="btn btn-primary btn-xs sm:btn-sm md:btn-md lg:btn-lg my-4 md:my-6" onClick={handleBtnAction}>{btnText}</button>
           {/* También crear opción de comienza comenzar! */}
         </div>
       </div>
