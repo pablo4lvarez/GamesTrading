@@ -8,6 +8,6 @@ export const NAV_LINKS = [
 
 export const NAV_LINKS_LOGGED = [
   { href: '/', key: 'trade', label: 'Intercambiar' },
-  { href: '/', key: 'profile', label: 'Perfil' },
+  { href: '/profile', key: 'profile', label: 'Perfil' },
   { href: '/logout', key: 'logout', label: 'Logout' },
 ];
