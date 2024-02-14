@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const fethUserData = async (userID: string) => {
+export const fethUserData = async (userID: string) => {
   try {
     const response = await axios.get(
       process.env.NEXT_PUBLIC_REACT_APP_BACKEND_URL + "/users/" + userID,
@@ -18,3 +18,52 @@ const fethUserData = async (userID: string) => {
     console.error('error:', error);
   }
 }
+
+export const fetchUserOffers = async (userID: string) => {
+
+  // Get all offers, and return the ones where user_id equals userID
+  try {
+    const response = await axios.get(
+      process.env.NEXT_PUBLIC_REACT_APP_BACKEND_URL + "/offers",
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const allOffers = response.data;
+    
+    // Filter offers where user_id equals userID
+    const userOffers = allOffers.offers.filter((offer: { user_id: number; game_id: number }) => offer.user_id.toString() === userID.toString());
+
+    return userOffers;
+  } catch (error) {
+    console.error('error:', error);
+  }
+
+}
+
+export const fetchUserWishes = async (userID: string) => {
+  try {
+    const response = await axios.get(
+      process.env.NEXT_PUBLIC_REACT_APP_BACKEND_URL + "/wishes",
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const allWishes = response.data;
+    console.log('allWishes:', allWishes);
+    const userWishes = allWishes.wishes.filter((wish: { user_id: number; game_id: number }) => wish.user_id.toString() === userID.toString());
+    return userWishes;
+  } catch (error) {
+    console.error('error:', error);
+  }
+}
+
+
+
+
+
+

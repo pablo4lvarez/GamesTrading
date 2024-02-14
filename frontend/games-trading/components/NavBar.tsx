@@ -12,7 +12,6 @@ const NavBar = () => {
   const [loggedNavLinks, setLoggedNavLinks] = useState(false);
 
   useEffect(() => {
-    console.log('Session in nav bar:', session);
     if (session.data) {
       setLoggedNavLinks(true);
     }
