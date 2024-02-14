@@ -41,3 +41,9 @@ def handle_game(id):
     db.session.commit()
     return jsonify({"message": f"Game {game.name} for {game.platform} with id {game.id} has been deleted successfully."})
 
+
+@games_routes.route('/games', methods=['GET'])
+def get_all_games():
+  games = GamesModel.query.all()
+  games_list = [{'id': game.id, 'name': game.name, 'genre': game.genre, 'year': game.year, 'platform': game.platform} for game in games]
+  return jsonify({"games": games_list})
