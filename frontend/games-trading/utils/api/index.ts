@@ -62,7 +62,41 @@ export const fetchUserWishes = async (userID: string) => {
   }
 }
 
+export const createOffer = async (offerData: any) => {
+  try {
+    const response = await axios.post(
+      process.env.NEXT_PUBLIC_REACT_APP_BACKEND_URL + "/offers",
+      offerData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log('response:', response);
+    return response;
+  } catch (error) {
+    console.error('error:', error);
+  }
+}
 
+export const createWish = async (wishData: any) => {
+  try {
+    const response = await axios.post(
+      process.env.NEXT_PUBLIC_REACT_APP_BACKEND_URL + "/wishes",
+      wishData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log('response:', response);
+    return response;
+  } catch (error) {
+    console.error('error:', error);
+  }
+}
 
 
 

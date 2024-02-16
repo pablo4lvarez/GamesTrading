@@ -30,6 +30,13 @@ const Trade = () => {
     setWishes(wishes);
   }
 
+  const getVideoGamesData = async (dbData: any) => {
+    console.log('dbData:', dbData);
+    // Complete this function...
+  };
+
+  // Add more functions...
+
   useEffect(() => {
     const userID = session.data?.user.id;
     if (userID) {

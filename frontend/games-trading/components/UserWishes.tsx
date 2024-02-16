@@ -7,7 +7,6 @@ const UserWishes = (wishes: {wishes: [any]}) => {
 
   const gameWishes = wishes.wishes;
   console.log('gameWishes:', gameWishes);
-  console.log('Wishes [0]:', gameWishes[0]);
 
 
   return (
