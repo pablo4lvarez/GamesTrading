@@ -13,6 +13,11 @@ const CreateOffer = () => {
   const [nameSearch, setNameSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedPlatform, setSelectedPlatform] = useState('');
+
+  const handlePlatformChange = (e: any) => {
+    setSelectedPlatform(e.target.value);
+  };
 
   const handleNameSearchChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
     setNameSearch(event.target.value);
@@ -23,8 +28,9 @@ const CreateOffer = () => {
     console.log('handleClick');
     console.log('nameSearch:', nameSearch);
     // fetchVideoGamesByName(nameSearch);
+    console.log('selectedPlatform:', selectedPlatform);
 
-    const data = await fetchVideoGamesByName(nameSearch)
+    const data = await fetchVideoGamesByName(nameSearch, selectedPlatform);
     
 
     setLoading(true);
@@ -66,6 +72,22 @@ const CreateOffer = () => {
             value={nameSearch}
             onChange={handleNameSearchChange}
           />
+          <select className="select select-primary w-1/4 max-w-fill mx-20"
+          value={selectedPlatform}
+          onChange={handlePlatformChange}
+          >
+            <option disabled value="">Plataforma</option>
+            <option value="">Todas</option>
+            <option value="PlayStation 4">PS4</option>
+            <option value="PlayStation 5">PS5</option>
+            <option value="PlayStation 3">PS3</option>
+            <option value="Nintendo Wii">Nintendo Wii</option>
+            <option value="Nintendo 3DS">Nintendo 3DS</option>
+            <option value="Nintendo Switch">Nintendo Switch</option>
+            <option value="Xbox 360">Xbox 360</option>
+            <option value="Xbox One">Xbox One</option>
+            <option value="Xbox Series X">Xbox Series X</option>
+          </select>
           <button className='btn btn-primary' onClick={handleClick}>Buscar</button>
         </div>
 
@@ -87,7 +109,4 @@ const CreateOffer = () => {
 };
 
 
-
-
 export default CreateOffer;
-
