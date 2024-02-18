@@ -6,7 +6,7 @@ import { getSession } from "next-auth/react";
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import { fetchVideoGamesByName } from '@/utils/fetchVideoGames';
-import GameDetails from '@/components/GameDetails';
+import CreateGameDetails from '@/components/GameDetails';
 
 const CreateOffer = () => {
 
@@ -98,7 +98,7 @@ const CreateOffer = () => {
         )}
 
         {!loading && searchResults.length > 0 && (
-          <GameDetails games={searchResults} />
+          <CreateGameDetails games={searchResults} />
         )}
 
       </div>
