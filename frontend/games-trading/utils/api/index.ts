@@ -62,6 +62,29 @@ export const fetchUserWishes = async (userID: string) => {
   }
 }
 
+export const createGame = async (name: string, year: number, platform: string) => {
+  try {
+    const response = await axios.post(
+      process.env.NEXT_PUBLIC_REACT_APP_BACKEND_URL + "/games",
+      {
+        name: name,
+        year: year,
+        platform: platform
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log('response:', response);
+    return response;
+  } catch (error) {
+    console.error('error:', error);
+  }
+}
+
+
 export const createOffer = async (offerData: any) => {
   try {
     const response = await axios.post(

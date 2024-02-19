@@ -1,8 +1,15 @@
+import { createGame, createOffer } from '@/utils/api';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 const CreateGameDetails = ({ games }) => {
-  const [selectedGame, setSelectedGame] = useState(null);
+  const [selectedGame, setSelectedGame] = useState(null as any);
   const [alert, setAlert] = useState(false);
+  const [successToast, setSuccessToast] = useState(false);
+  const session = useSession();
+  const userID = session.data?.user.id;
+  const router = useRouter();
 
   const handleOpenModal = () => {
     console.log('handleOpenModal...');
@@ -15,7 +22,7 @@ const CreateGameDetails = ({ games }) => {
     setAlert(false);
   }
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     console.log('handleCreate...');
     const platformSelect = document.getElementById('platformSelect') as HTMLSelectElement;
     
@@ -25,14 +32,51 @@ const CreateGameDetails = ({ games }) => {
     }
 
     console.log('selectedGame:', selectedGame);
+
+    const name = selectedGame?.name;
     const platform = platformSelect.value;
-    const gameID = selectedGame?.id;
-    console.log('gameID:', gameID);
-    console.log('platform:', platform);
+    const releaseDate = selectedGame?.released;
+    const year = parseInt(releaseDate.substring(0, 4));
+    
 
-    // TODO: create game in the DB
+    console.log('user ID:', userID);
+    
 
-    // TODO: create offer in the DB using gameID and platform
+
+    // Create game in the DB
+    const gameResponse = await createGame(name, year, platform);
+    console.log('gameResponse:', gameResponse);
+    if (gameResponse?.status === 201) {
+      // Create offer in the DB using gameID
+      console.log('game created successfully');
+      const gameID = gameResponse.data.game_id;
+
+      const offerData = {
+        game_id: gameID,
+        user_id: userID
+      }
+
+      console.log('offerData:', offerData);
+      const offerResponse = await createOffer(offerData);
+      console.log('offerResponse:', offerResponse);
+
+      if (offerResponse?.status === 201) {
+        console.log('offer created successfully');
+        setSuccessToast(true);
+
+        setTimeout(() => {
+          setSuccessToast(false);
+        }, 2000);
+
+      } else if (offerResponse?.status === 400) {
+        // TODO: handle error
+        console.log('need to handle errors');
+      }
+
+    } else if (gameResponse?.status === 400) {
+      // TODO: handle error
+      console.log('need to handle errors');
+    }
 
     document.getElementById('my_modal').close();
   }
@@ -111,7 +155,15 @@ const CreateGameDetails = ({ games }) => {
       </dialog>
 
 
-
+      {successToast && (
+        <div className="toast toast-end">
+          <div className="alert alert-success">
+            <span>Oferta creada con éxito</span>
+          </div>
+        </div>
+      
+      )}
+      
 
     </div>
   );
