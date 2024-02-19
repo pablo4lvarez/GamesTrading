@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, abort
+from flask import Blueprint, jsonify, request, abort, make_response
 
 from models import GamesModel, db
 
@@ -7,24 +7,32 @@ games_routes = Blueprint('games_routes', __name__)
 
 @games_routes.route('/games', methods=['POST'])
 def create_game():
-  if request.is_json:
-    data = request.get_json()
-    if type(data['year']) != int:
-      casted_year = int(data['year'])
-    elif type(data['year']) == int:
-      casted_year = data['year']
+    if request.is_json:
+        data = request.get_json()
+        if type(data['year']) != int:
+            casted_year = int(data['year'])
+        elif type(data['year']) == int:
+            casted_year = data['year']
 
-    new_game = GamesModel(
-                name=data['name'],
-                year=casted_year,
-                platform=data['platform']
-              )
-    
-    db.session.add(new_game)
-    db.session.commit()
-    return jsonify({"message": f"Game {new_game.name} for {new_game.platform} has been created successfully."})
-  else:
-    abort(400, description="The request payload is not in JSON format")
+        new_game = GamesModel(
+            name=data['name'],
+            year=casted_year,
+            platform=data['platform']
+        )
+
+        db.session.add(new_game)
+        db.session.commit()
+
+        response_data = {
+          "message": f"Game {new_game.name} for {new_game.platform} has been created successfully.",
+          "game_id": new_game.id
+        }
+
+        # Return a response with code 201 (Created)
+        return make_response(jsonify(response_data), 201)
+    else:
+        abort(400, description="The request payload is not in JSON format")
+
 
 @games_routes.route('/games/<id>', methods=['GET', 'DELETE'])
 def handle_game(id):

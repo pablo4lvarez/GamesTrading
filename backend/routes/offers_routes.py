@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, jsonify, request
+from flask import Blueprint, abort, jsonify, request, make_response
 
 from models import GamesModel, UsersModel, OffersModel, db
 
@@ -25,7 +25,11 @@ def create_offer():
                   )
         db.session.add(new_offer)
         db.session.commit()
-        return jsonify({"message": f"Offer {new_offer.id} has been created successfully."})
+        # return jsonify({"message": f"Offer {new_offer.id} has been created successfully."})
+        response_data = {
+          "message": f"Offer {new_offer.id} has been created successfully.",
+        }
+        return make_response(jsonify(response_data), 201)
       
       elif not game:
         abort(404, description=f"The game with the id: {data['game_id']} does not exist")
