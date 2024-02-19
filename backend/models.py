@@ -29,13 +29,13 @@ class GamesModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
-    genre = db.Column(db.String(128), nullable=False)
+    # genre = db.Column(db.String(128), nullable=False)
     year = db.Column(db.Integer, nullable=False)
     platform = db.Column(db.String(128), nullable=False)
 
-    def __init__(self, name, genre, year, platform):
+    def __init__(self, name, year, platform):
         self.name = name
-        self.genre = genre
+        # self.genre = genre
         self.year = year
         self.platform = platform
 
