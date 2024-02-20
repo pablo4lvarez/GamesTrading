@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, abort
+from flask import Blueprint, jsonify, request, abort, make_response
 
 from models import UsersModel, db
 
@@ -16,6 +16,7 @@ def get_users():
 @user_routes.route('/users', methods=['POST'])
 def create_user():
   # Logic to create a user
+  # TO DO: Add validation to the request payload
   if request.is_json:
     data = request.get_json()
     new_user = UsersModel(
@@ -29,7 +30,10 @@ def create_user():
     
     db.session.add(new_user)
     db.session.commit()
-    return jsonify({"message": f"User {new_user.name} has been created successfully."})
+    response_data = {
+      "message": f"User {new_user.name} has been created successfully.",
+    }
+    return make_response(jsonify(response_data), 201)
   else:
     abort(400, description="The request payload is not in JSON format")
 
@@ -39,7 +43,14 @@ def handle_user(id):
   if request.method == 'GET':
     # Logic to get a single user
     if user:
-      return jsonify({"name": user.name, "lastname": user.lastname, "email": user.email, "phone": user.phone, "location": user.location})
+      response_data = {
+        "name": user.name,
+        "lastname": user.lastname,
+        "email": user.email,
+        "phone": user.phone,
+        "location": user.location
+      }
+      return make_response(jsonify(response_data), 200)
     else:
       abort(404, description="The user does not exist")
   
@@ -59,13 +70,19 @@ def handle_user(id):
     if 'location' in data:
         user.location = data['location']
     db.session.commit()
-    return jsonify({"message": f"User {user.name} successfully updated"})
+    response_data = {
+      "message": f"User {user.name} successfully updated"
+    }
+    return make_response(jsonify(response_data), 200)
 
   elif request.method == 'DELETE':
     # Logic to delete a user
     db.session.delete(user)
     db.session.commit()
-    return jsonify({"message": f"User {user.name} successfully deleted."})
+    response_data = {
+      "message": f"User {user.name} successfully deleted."
+    }
+    return make_response(jsonify(response_data), 200)
 
 
 @user_routes.route('/users/login', methods=['POST'])
@@ -87,7 +104,7 @@ def login_user():
         "data": user_data
       }
 
-      return jsonify(response_data)
+      return make_response(jsonify(response_data), 200)
     else:
       abort(401, description="Invalid username or password")
   else:

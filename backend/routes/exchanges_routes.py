@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, jsonify, request
+from flask import Blueprint, abort, jsonify, request, make_response
 
 from models import GamesModel, UsersModel, ExchangesModel, db
 
@@ -10,7 +10,10 @@ def get_exchanges():
   exchanges = ExchangesModel.query.all()
   # Convert the exchanges to a list of dictionaries
   exchanges_list = [{'user_id': exchange.user_id, 'game_id': exchange.game_id} for exchange in exchanges]
-  return jsonify({"exchanges": exchanges_list})
+  response_data = {
+    "exchanges": exchanges_list
+  }
+  return make_response(jsonify(response_data), 200)
 
 @exchange_routes.route('/exchanges', methods=['POST'])
 def create_exchange():
@@ -42,7 +45,10 @@ def create_exchange():
     
     db.session.add(new_exchange)
     db.session.commit()
-    return jsonify({"message": f"Exchange {new_exchange.id} has been created successfully."})
+    response_data = {
+      "message": f"Exchange {new_exchange.id} has been created successfully."
+    }
+    return make_response(jsonify(response_data), 201)
   else:
     abort(400, description="The request payload is not in JSON format")
 
@@ -53,7 +59,14 @@ def handle_exchange(id):
 
     if request.method == 'GET':
       # Logic to get a single exchange
-      return jsonify({"user_1_id": exchange.user_1_id, "user_2_id": exchange.user_2_id, "game_1_id": exchange.game_1_id, "game_2_id": exchange.game_2_id, "status": exchange.status})
+      response_data = {
+        "user_1_id": exchange.user_1_id,
+        "user_2_id": exchange.user_2_id,
+        "game_1_id": exchange.game_1_id,
+        "game_2_id": exchange.game_2_id,
+        "status": exchange.status
+      }
+      return make_response(jsonify(response_data), 200)
     
     elif request.method == 'PUT':
       # Logic to update an exchange
@@ -61,7 +74,10 @@ def handle_exchange(id):
       if 'status' in data:
           exchange.status = data['status']
           db.session.commit()
-          return jsonify({"message": f"Exchange {exchange.id} has been updated successfully."})
+          response_data = {
+            "message": f"Exchange {exchange.id} has been updated successfully."
+          }
+          return make_response(jsonify(response_data), 200)
       elif 'status' not in data:
           abort(400, description="The request payload does not contain the desired data.")
 
@@ -69,7 +85,10 @@ def handle_exchange(id):
       # Logic to delete an exchange
       db.session.delete(exchange)
       db.session.commit()
-      return jsonify({"message": f"Exchange {exchange.id} has been deleted successfully."})
+      response_data = {
+        "message": f"Exchange {exchange.id} has been deleted successfully."
+      }
+      return make_response(jsonify(response_data), 200)
     
   elif not exchange:
     abort(404, description=f"Exchange with the id:{id} not found")

@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, jsonify, request
+from flask import Blueprint, abort, jsonify, request, make_response
 
 from models import GamesModel, UsersModel, WishesModel, db
 
@@ -8,7 +8,10 @@ wishes_routes = Blueprint('wishes_routes', __name__)
 def get_wishes():
   wishes = WishesModel.query.all()
   wishes_list = [{'user_id': wish.user_id, 'game_id': wish.game_id, 'wish_id': wish.id} for wish in wishes]
-  return jsonify({"wishes": wishes_list})
+  response_data = {
+    "wishes": wishes_list,
+  }
+  return make_response(jsonify(response_data), 200)
 
 @wishes_routes.route('/wishes', methods=['POST'])
 def create_wish():
@@ -25,7 +28,10 @@ def create_wish():
                   )
         db.session.add(new_wish)
         db.session.commit()
-        return jsonify({"message": f"Wish {new_wish.id} has been created successfully."})
+        response_data = {
+          "message": f"Wish {new_wish.id} has been created successfully.",
+        }
+        return make_response(jsonify(response_data), 201)
       
       elif not game:
         abort(404, description=f"The game with the id: {data['game_id']} does not exist")
@@ -41,7 +47,12 @@ def handle_wish(id):
   wish = WishesModel.query.get(id)
   if request.method == 'GET':
     if wish:
-      return jsonify({"user_id": wish.user_id, "game_id": wish.game_id})
+      response_data = {
+        "user_id": wish.user_id,
+        "game_id": wish.game_id,
+        "wish_id": wish.id
+      }
+      return make_response(jsonify(response_data), 200)
     else:
       abort(404, description="The wish does not exist")
   
@@ -49,6 +60,9 @@ def handle_wish(id):
     if wish:
       db.session.delete(wish)
       db.session.commit()
-      return jsonify({"message": f"Wish {wish.id} has been deleted successfully."})
+      response_Data = {
+        "message": f"Wish {wish.id} has been deleted successfully."
+      }
+      return make_response(jsonify(response_Data), 200)
     else:
       abort(404, description="The wish does not exist")

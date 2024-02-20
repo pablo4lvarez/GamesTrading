@@ -39,18 +39,32 @@ def handle_game(id):
   game = GamesModel.query.get(id)
   if request.method == 'GET':
     if game:
-      return jsonify({"name": game.name, "year": game.year, "platform": game.platform})
+      response_data = {
+        "name": game.name,
+        "year": game.year,
+        "platform": game.platform
+      }
+      return make_response(jsonify(response_data), 200)
     else:
       abort(404, description="The game does not exist")
   
   elif request.method == 'DELETE':
-    db.session.delete(game)
-    db.session.commit()
-    return jsonify({"message": f"Game {game.name} for {game.platform} with id {game.id} has been deleted successfully."})
+    if game:
+      db.session.delete(game)
+      db.session.commit()
+      response_data = {
+        "message": f"Game {game.name} for {game.platform} with id {game.id} has been deleted successfully."
+      }
+      return make_response(jsonify(response_data), 200)
+    else:
+      abort(404, description="The game does not exist")
 
 
 @games_routes.route('/games', methods=['GET'])
 def get_all_games():
   games = GamesModel.query.all()
   games_list = [{'id': game.id, 'name': game.name, 'year': game.year, 'platform': game.platform} for game in games]
-  return jsonify({"games": games_list})
+  response_data = {
+    "games": games_list
+  }
+  return make_response(jsonify(response_data), 200)

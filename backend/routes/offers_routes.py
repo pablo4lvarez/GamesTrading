@@ -8,7 +8,10 @@ offers_routes = Blueprint('offers_routes', __name__)
 def get_offers():
   offers = OffersModel.query.all()
   offers_list = [{'user_id': offer.user_id, 'game_id': offer.game_id, 'offer_id': offer.id} for offer in offers]
-  return jsonify({"offers": offers_list})
+  response_data = {
+    "offers": offers_list,
+  }
+  return make_response(jsonify(response_data), 200)
 
 @offers_routes.route('/offers', methods=['POST'])
 def create_offer():
@@ -25,7 +28,6 @@ def create_offer():
                   )
         db.session.add(new_offer)
         db.session.commit()
-        # return jsonify({"message": f"Offer {new_offer.id} has been created successfully."})
         response_data = {
           "message": f"Offer {new_offer.id} has been created successfully.",
         }
@@ -45,7 +47,12 @@ def handle_offers(id):
   offer = OffersModel.query.get(id)
   if request.method == 'GET':
     if offer:
-      return jsonify({"user_id": offer.user_id, "game_id": offer.game_id})
+      response_data = {
+        "user_id": offer.user_id,
+        "game_id": offer.game_id,
+        "offer_id": offer.id
+      }
+      return make_response(jsonify(response_data), 200)
     else:
       abort(404, description="The offer does not exist")
   
