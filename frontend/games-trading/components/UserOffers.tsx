@@ -4,52 +4,49 @@ import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import '../app/globals.css'
+import GameCard from "./GameCard";
 
-const UserOffers = (offers: {offers: [any]}) => {
 
-  const gameOffers = offers.offers;
+interface Game {
+  name: string;
+  year: number;
+  platform: string;
+  offerID: number;
+}
+
+interface UserOffersProps {
+  offerGames: Game[];
+}
+
+const UserOffers: React.FC<UserOffersProps> = ({ offerGames }) => {
+
+
   const router = useRouter();
-  console.log('gameOffers:', gameOffers);
+  console.log('gameOffers in UserOffers component!:', offerGames);
   
   const handleClick = () => {
     router.push('/create-offer');
   }
 
-
   return (
-    <div className="h-1/3 flex flex-row justify-between my-4">
-      <div className="w-1/2 mx-4 flex flex-col items-center">
-        <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-3xl">
+    <div className="flex flex-col md:flex-row justify-between my-4 md:mx-4">
+      <div className="w-full md:w-1/2 flex flex-col items-center">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-4xl mb-4">
           Tus ofertas
         </h1>
-        <div className="carousel carousel-center max-w-xs h-48 p-4 space-x-4 bg-neutral rounded-box">
-          <div className="carousel-item">
-            <img src="https://daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.jpg" className="rounded-box" />
-          </div>
-          <div className="carousel-item">
-            <img src="https://daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.jpg" className="rounded-box" />
-          </div>
-          <div className="carousel-item">
-            <img src="https://daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.jpg" className="rounded-box" />
-          </div>
-          <div className="carousel-item">
-            <img src="https://daisyui.com/images/stock/photo-1494253109108-2e30c049369b.jpg" className="rounded-box" />
-          </div>
-          <div className="carousel-item">
-            <img src="https://daisyui.com/images/stock/photo-1550258987-190a2d41a8ba.jpg" className="rounded-box" />
-          </div>
-          <div className="carousel-item">
-            <img src="https://daisyui.com/images/stock/photo-1559181567-c3190ca9959b.jpg" className="rounded-box" />
-          </div>
-          <div className="carousel-item">
-            <img src="https://daisyui.com/images/stock/photo-1601004890684-d8cbf643f5f2.jpg" className="rounded-box" />
-          </div>
-        </div>
 
+        <div className="carousel carousel-center max-w-full md:max-w-sm h-60 p-4 space-x-4 bg-neutral rounded-box">
+          {offerGames.map((game, index) => (
+            <div key={index} className="carousel-item">
+              <GameCard {...game} />
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="w-1/2 mx-4 flex flex-col justify-center">
-        <button 
-          className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-primary active:btn-primary mx-auto p-2"
+
+      <div className="w-full md:w-1/2 mt-4 md:mt-0 flex flex-col justify-center">
+        <button
+          className="btn btn-sm md:btn-md lg:btn-lg btn-primary active:btn-primary mx-auto p-2"
           onClick={handleClick}
         >
           Crear Oferta

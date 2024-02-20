@@ -23,7 +23,3 @@ export const fetchVideoGamesByName = async (name: string, platform: string) => {
     console.error('error:', error);
   }
 };
-
-export const fetchVideoGamesById = async () => {
-  console.log('fetchVideoGamesById');
-}

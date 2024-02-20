@@ -2,11 +2,11 @@
 
 import { useSession } from 'next-auth/react';
 import '../app/globals.css'
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import NavBar from '@/components/NavBar';
 import UserOffers from '@/components/UserOffers';
 import Footer from '@/components/Footer';
-import { fetchUserOffers, fetchUserWishes } from "@/utils/api";
+import { fetchGameData, fetchUserOffers, fetchUserWishes } from "@/utils/api";
 import UserWishes from '@/components/UserWishes';
 
 const Trade = () => {
@@ -15,6 +15,8 @@ const Trade = () => {
 
   const [offers, setOffers] = useState([]);
   const [wishes, setWishes] = useState([]);
+  const [offerGames, setOfferGames] = useState([]);
+  const [wishGames, setWishGames] = useState([]);
   
   console.log('userID in exchange:', userID);
 
@@ -30,22 +32,39 @@ const Trade = () => {
     setWishes(wishes);
   }
 
-  const getVideoGamesData = async (dbData: any) => {
-    console.log('dbData:', dbData);
-    // Complete this function...
+
+  const fetchGameDataForOffers = async () => {
+
+    const gamesData = await Promise.all(
+      offers.map(async (offer) => {
+        const gameData = await fetchGameData(offer.game_id);
+        return { ...gameData, offerID: offer.offer_id }; // Add offerID to the gameData object
+      })
+    );
+    setOfferGames(gamesData);
   };
+
+
 
   // Add more functions...
 
   useEffect(() => {
     const userID = session.data?.user.id;
     if (userID) {
-
       fetchOffers(userID);
       fetchWishes(userID);
-
     }
   }, [userID]);
+
+  useEffect(() => {
+    if (offers.length > 0) {
+      fetchGameDataForOffers();
+    }
+  }, [offers]);
+
+  useEffect(() => {
+    console.log('offerGames', offerGames);
+  }, [offerGames]);
 
   return (
     <div>
@@ -54,7 +73,7 @@ const Trade = () => {
         <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold my-4 md:my-8 text-center">
           Intercambiar juegos
         </h1>
-        <UserOffers offers={offers} />
+        <UserOffers offerGames={offerGames} />
         <UserWishes wishes={wishes}/>
       </div>
       <Footer />

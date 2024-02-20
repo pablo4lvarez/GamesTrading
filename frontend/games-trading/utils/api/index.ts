@@ -121,6 +121,42 @@ export const createWish = async (wishData: any) => {
   }
 }
 
+export const fetchGameData = async (gameID: number) => {
+  try {
+    const response = await axios.get(
+      process.env.NEXT_PUBLIC_REACT_APP_BACKEND_URL + "/games/" + gameID,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log('response:', response);
+    const gameData = response.data;
+    console.log('gameData:', gameData);
+    return gameData;
+  } catch (error) {
+    console.error('error:', error);
+  }
+}
+
+export const deleteOffer = async (offerID: number) => {
+  try {
+    const response = await axios.delete(
+      process.env.NEXT_PUBLIC_REACT_APP_BACKEND_URL + "/offers/" + offerID,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log('response:', response);
+    return response;
+  } catch (error) {
+    console.error('error:', error);
+  }
+}
+
 
 
 

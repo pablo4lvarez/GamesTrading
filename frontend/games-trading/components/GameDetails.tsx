@@ -37,18 +37,14 @@ const CreateGameDetails = ({ games }) => {
     const platform = platformSelect.value;
     const releaseDate = selectedGame?.released;
     const year = parseInt(releaseDate.substring(0, 4));
-    
 
     console.log('user ID:', userID);
-    
-
 
     // Create game in the DB
     const gameResponse = await createGame(name, year, platform);
     console.log('gameResponse:', gameResponse);
     if (gameResponse?.status === 201) {
       // Create offer in the DB using gameID
-      console.log('game created successfully');
       const gameID = gameResponse.data.game_id;
 
       const offerData = {
@@ -56,12 +52,9 @@ const CreateGameDetails = ({ games }) => {
         user_id: userID
       }
 
-      console.log('offerData:', offerData);
       const offerResponse = await createOffer(offerData);
-      console.log('offerResponse:', offerResponse);
 
       if (offerResponse?.status === 201) {
-        console.log('offer created successfully');
         setSuccessToast(true);
 
         setTimeout(() => {
