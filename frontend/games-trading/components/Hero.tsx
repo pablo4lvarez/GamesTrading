@@ -26,7 +26,6 @@ const Hero: React.FC<HeroProps> = ({ router }) => {
   useEffect(() => {
     console.log('session:', session);
     if (session.data) {
-      console.log('session.data:', session.data);
       setBtnText('Comenzar');
     }
   });
