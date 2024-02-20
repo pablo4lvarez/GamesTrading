@@ -7,7 +7,7 @@ wishes_routes = Blueprint('wishes_routes', __name__)
 @wishes_routes.route('/wishes', methods=['GET'])
 def get_wishes():
   wishes = WishesModel.query.all()
-  wishes_list = [{'user_id': wish.user_id, 'game_id': wish.game_id} for wish in wishes]
+  wishes_list = [{'user_id': wish.user_id, 'game_id': wish.game_id, 'wish_id': wish.id} for wish in wishes]
   return jsonify({"wishes": wishes_list})
 
 @wishes_routes.route('/wishes', methods=['POST'])

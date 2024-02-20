@@ -7,7 +7,7 @@ offers_routes = Blueprint('offers_routes', __name__)
 @offers_routes.route('/offers', methods=['GET'])
 def get_offers():
   offers = OffersModel.query.all()
-  offers_list = [{'user_id': offer.user_id, 'game_id': offer.game_id} for offer in offers]
+  offers_list = [{'user_id': offer.user_id, 'game_id': offer.game_id, 'offer_id': offer.id} for offer in offers]
   return jsonify({"offers": offers_list})
 
 @offers_routes.route('/offers', methods=['POST'])
@@ -53,7 +53,10 @@ def handle_offers(id):
     if offer:
       db.session.delete(offer)
       db.session.commit()
-      return jsonify({"message": f"Offer {offer.id} has been deleted successfully."})
+      response_data = {
+        "message": f"Offer {offer.id} has been deleted successfully.",
+      }
+      return make_response(jsonify(response_data), 200)
     else:
       abort(404, description="The offer does not exist")
 
